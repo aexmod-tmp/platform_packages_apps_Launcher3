@@ -56,6 +56,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.android.launcher3.graphics.LauncherIcons;
+import com.android.launcher3.graphics.IconNormalizer;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -125,6 +126,7 @@ public class IconsHandler {
         } else {
             mDrawables.clear();
         }
+        mFactor = 1.0f;
 
         if (isDefaultIconPack()) {
             return;
@@ -358,6 +360,10 @@ public class IconsHandler {
         return LauncherIcons.createBadgedIconBitmap(defaultIcon, info.user, context, Build.VERSION_CODES.O);
     }
 
+    public Bitmap getBadgedCustomIcon(Drawable d, Context ctx) {
+        return LauncherIcons.createBadgedIconBitmap(d, Process.myUserHandle(), ctx, Build.VERSION_CODES.O);
+    }
+
     private Bitmap generateBitmap(ComponentName componentName, Bitmap defaultBitmap) {
         Drawable d = new BitmapDrawable(mContext.getResources(), defaultBitmap);
         if (mBackImages.isEmpty()) {
@@ -366,7 +372,7 @@ public class IconsHandler {
         }
 
         Bitmap wrapped = LauncherIcons.createBadgedIconBitmap(d, Process.myUserHandle(),
-                mContext, Build.VERSION.SDK_INT, true);
+                mContext, Build.VERSION.SDK_INT, false);
 
         Random random = new Random();
         int id = random.nextInt(mBackImages.size());
@@ -378,6 +384,11 @@ public class IconsHandler {
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(backImage, 0, 0, null);
 
+        IconNormalizer normalizer = IconNormalizer.getInstance(mContext);
+        if (!normalizer.isTransparentBitmap(backImage)) {
+            mFactor = 0.7f;
+        }
+
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(wrapped,
                 (int) (w * mFactor), (int) (h * mFactor), false);
 
@@ -387,7 +398,7 @@ public class IconsHandler {
         maskCanvas.drawBitmap(targetBitmap, 0, 0, new Paint());
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST));
         canvas.drawBitmap(scaledBitmap, (w - scaledBitmap.getWidth()) / 2,
                 (h - scaledBitmap.getHeight()) / 2, null);
         canvas.drawBitmap(mutableMask, 0, 0, paint);
