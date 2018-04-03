@@ -322,13 +322,11 @@ public class IconsHandler {
     }
 
     public void switchIconPacks(String packageName) {
+        new IconPackLoader(packageName).execute();
+    }
 
-        if (packageName.equals(mIconPackPackageName)) {
-            packageName = mDefaultIconPack;
-        }
-        if (packageName.equals(mDefaultIconPack) || mIconPacks.containsKey(packageName)) {
-            new IconPackLoader(packageName).execute();
-        }
+    public String getCurrentIconPackPackageName() {
+        return mIconPackPackageName;
     }
 
     public Bitmap getDrawableIconForPackage(ComponentName componentName) {
@@ -440,13 +438,7 @@ public class IconsHandler {
         for (ResolveInfo ri : launcherActivities) {
             String packageName = ri.activityInfo.packageName;
             IconPackInfo info = new IconPackInfo(ri, mPackageManager);
-            try {
-                ApplicationInfo ai = mPackageManager.getApplicationInfo(packageName,
-                        PackageManager.GET_META_DATA);
-                mIconPacks.put(packageName, info);
-            } catch (NameNotFoundException e) {
-                Log.e(TAG, "Unable to find package " + packageName, e);
-            }
+            mIconPacks.put(packageName, info);
         }
     }
 

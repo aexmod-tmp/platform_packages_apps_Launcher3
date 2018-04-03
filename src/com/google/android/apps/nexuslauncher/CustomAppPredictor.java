@@ -26,7 +26,7 @@ import java.util.Set;
 
 public class CustomAppPredictor extends UserEventDispatcher implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int MAX_PREDICTIONS = 10;
-    private static final int BOOST_ON_OPEN = 7;
+    private static final int BOOST_ON_OPEN = 9;
     private static final String PREDICTION_SET = "pref_prediction_set";
     private static final String PREDICTION_PREFIX = "pref_prediction_count_";
     private static final Set<String> EMPTY_SET = new HashSet<>();
@@ -177,7 +177,7 @@ public class CustomAppPredictor extends UserEventDispatcher implements SharedPre
     }
 
     private boolean isPredictorEnabled() {
-        return Utilities.getPrefs(mContext).getBoolean(AppDrawerActivity.SHOW_PREDICTIONS_PREF, false);
+        return Utilities.getPrefs(mContext).getBoolean(AppDrawerActivity.SHOW_PREDICTIONS_PREF, true);
     }
 
     @Override

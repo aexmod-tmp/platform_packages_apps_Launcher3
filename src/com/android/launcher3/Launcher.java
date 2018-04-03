@@ -1097,6 +1097,9 @@ public class Launcher extends BaseActivity
         // Refresh shortcuts if the permission changed.
         mModel.refreshShortcutsIfRequired();
 
+        if (mAllAppsController.isTransitioning()) {
+            mAppsView.setVisibility(View.VISIBLE);
+        }
         if (shouldShowDiscoveryBounce()) {
             mAllAppsController.showDiscoveryBounce();
         }
@@ -1791,7 +1794,9 @@ public class Launcher extends BaseActivity
             // If we are already on home, then just animate back to the workspace,
             // otherwise, just wait until onResume to set the state back to Workspace
             if (alreadyOnHome) {
-                showWorkspace(true);
+                if (!mAllAppsController.isDragging()) {
+                    showWorkspace(true);
+                }
             } else {
                 mOnResumeState = State.WORKSPACE;
             }
