@@ -572,12 +572,9 @@ public class Launcher extends BaseActivity
     }
 
     private void loadExtractedColorsAndColorItems() {
-        // TODO: do this in pre-N as well, once the extraction part is complete.
-        if (Utilities.ATLEAST_NOUGAT) {
-            mExtractedColors.load(this);
-            mHotseat.updateColor(mExtractedColors, !mPaused);
-            mWorkspace.getPageIndicator().updateColor(mExtractedColors);
-        }
+        mExtractedColors.load(this);
+        mHotseat.updateColor(mExtractedColors, !mPaused);
+        mWorkspace.getPageIndicator().updateColor(mExtractedColors);
     }
 
     private LauncherCallbacks mLauncherCallbacks;
@@ -1010,6 +1007,7 @@ public class Launcher extends BaseActivity
         if (mOnResumeState == State.WORKSPACE) {
             showWorkspace(false);
         } else if (mOnResumeState == State.APPS) {
+            mWorkspace.setVisibility(View.INVISIBLE);
             boolean launchedFromApp = (mWaitingForResume != null);
             // Don't update the predicted apps if the user is returning to launcher in the apps
             // view after launching an app, as they may be depending on the UI to be static to

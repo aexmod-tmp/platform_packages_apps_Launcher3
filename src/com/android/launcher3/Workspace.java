@@ -1298,6 +1298,7 @@ public class Workspace extends PagedView
     protected void onPageBeginTransition() {
         super.onPageBeginTransition();
         updateChildrenLayersEnabled(false);
+        AbstractFloatingView.closeAllOpenViews(mLauncher);
     }
 
     protected void onPageEndTransition() {
@@ -1382,8 +1383,21 @@ public class Workspace extends PagedView
         }
 
         updatePageAlphaValues();
+        updatePageContentAlpha();
         updateStateForCustomContent();
         enableHwLayersOnVisiblePages();
+    }
+
+    private void updatePageContentAlpha() {
+        int screenCenter = getScrollX() + getViewportWidth() / 2;
+        for (int i = numCustomPages(); i < getChildCount(); i++) {
+            CellLayout child = (CellLayout) getChildAt(i);
+            if (child != null) {
+                float scrollProgress = getScrollProgress(screenCenter, child, i);
+                float alpha = 1 - (isInOverviewMode() ? 0 : Math.abs(scrollProgress));
+                child.setAlpha(alpha);
+            }
+        }
     }
 
     private void showPageIndicatorAtCurrentScroll() {
