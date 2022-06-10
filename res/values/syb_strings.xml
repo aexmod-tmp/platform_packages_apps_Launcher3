@@ -16,7 +16,7 @@
 * limitations under the License.
 */
 -->
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Application name -->
     <string name="launcher_app_name" translatable="false">Syberia Launcher</string>
@@ -129,4 +129,8 @@
 
     <!-- Row Height -->
     <string name="row_height_title">Row height</string>
+
+    <!-- Taskbar -->
+    <string name="pref_allow_phone_taskbar_title">Use taskbar</string>
+    <string name="pref_allow_phone_taskbar_summary">For opening and switching apps anywhere</string>
 </resources>
