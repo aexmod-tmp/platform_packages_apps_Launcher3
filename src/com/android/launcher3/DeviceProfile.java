@@ -33,6 +33,7 @@ import static com.android.launcher3.testing.shared.ResourceUtils.roundPxValueFro
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -77,6 +78,7 @@ import java.util.function.Consumer;
 public class DeviceProfile {
 
     public static final String KEY_ROW_HEIGHT = "pref_row_height";
+    public static final String KEY_PHONE_TASKBAR = "pref_allow_phone_taskbar";
 
     private static final int DEFAULT_DOT_SIZE = 100;
     private static final float ALL_APPS_TABLET_MAX_ROWS = 5.5f;
@@ -329,15 +331,15 @@ public class DeviceProfile {
                 && inv.hotseatSpecsId != INVALID_RESOURCE_HANDLE;
 
         mIsScalableGrid = inv.isScalable && !isVerticalBarLayout() && !isMultiWindowMode;
+        SharedPreferences prefs = LauncherPrefs.getPrefs(context);
+
         // Determine device posture.
         mInfo = info;
         isTablet = info.isTablet(windowBounds);
         isPhone = !isTablet;
         isTwoPanels = isTablet && isMultiDisplay;
         boolean allowTaskbar = prefs.getBoolean(KEY_PHONE_TASKBAR, isTablet);
-        boolean isTaskBarEnabled = Settings.System.getInt(context.getContentResolver(),
-                Settings.System.ENABLE_TASKBAR, isTablet ? 1 : 0) == 1;
-        isTaskbarPresent = (isTablet || isTaskBarEnabled) && ApiWrapper.TASKBAR_DRAWN_IN_PROCESS;
+        isTaskbarPresent = allowTaskbar && ApiWrapper.TASKBAR_DRAWN_IN_PROCESS;
 
         // Some more constants.
         context = getContext(context, info, isVerticalBarLayout() || (isTablet && isLandscape)
