@@ -5,6 +5,7 @@ import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
+import com.android.app.animation.Interpolators;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.Workspace;
