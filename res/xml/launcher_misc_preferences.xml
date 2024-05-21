@@ -19,15 +19,14 @@
     xmlns:launcher="http://schemas.android.com/apk/res-auto"
     xmlns:settings="http://schemas.android.com/apk/res/com.android.launcher3">
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:key="pref_allowRotation"
         android:title="@string/allow_rotation_title"
         android:summary="@string/allow_rotation_desc"
         android:defaultValue="false"
         android:persistent="true"
         launcher:logIdOn="615"
-        launcher:logIdOff="616"
-        launcher:iconSpaceReserved="false" />
+        launcher:logIdOff="616" />
 
     <Preference
         android:key="pref_trust_apps"
